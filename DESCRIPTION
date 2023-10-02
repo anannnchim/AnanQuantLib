@@ -1,11 +1,12 @@
 Package: AnanQuantLib
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Quantitative Toolbox for Investment Labs at Anan Capital
 Version: 0.1.0
-Author: Who wrote it
+Author: Anan Capital Team
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: A set of utilities and functions to assist with investment research and data analysis at Anan Capital. The package includes functionalities for computing financial metrics, handling data, and generating reports.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    quantmod
