@@ -1,32 +1,36 @@
-#' Compute Price Volatility
+#' Compute Exponentially Weighted Moving Volatility
 #'
-#' This function calculates the price volatility of a given stock based on
-#' the close prices using an exponential decay factor.
+#' This function computes the exponentially weighted moving volatility of a given stock
+#' based on its closing prices. The exponential decay factor is utilized to give more weight
+#' to recent observations.
 #'
-#' @param stock_data xts object containing stock data.
-#' @param window Integer for the look-back window.
-#' @return An xts object with the computed price volatility.
-#'
+#' @param stock_data An xts object containing the stock's closing prices.
+#' @param window An integer specifying the look-back window for the exponential decay factor.
+#'               Default is set to 36.
+#' @return An xts object containing the computed price volatility values for each date in the original dataset.
+#' @importFrom xts reclass
+#' @importFrom quantmod Cl
 #' @examples
 #' stock_data = xts(runif(100, 100, 200), Sys.Date() + 1:100)
 #' comp_volatility(stock_data)
+#' comp_volatility(stock_data, window = 50)
 
-comp_volatility = function(stock_data, window = 36){
+comp_volatility <- function(stock_data, window = 36) {
 
-  # 1. Initialize variables
-  decay_factor = ( 2 /( window + 1))
-  return_power = (diff(Cl(stock_data))^2)
-  variance = c()
+  # Initialize variables
+  decay_factor <- (2 / (window + 1))
+  return_power <- diff(Cl(stock_data))^2
+  variance <- numeric(nrow(stock_data))
 
-  # 2. Compute the volatility
-  for(i in 2:nrow(stock_data)){
-    if(i == 2){
-      variance[i] = return_power[i]
-    }else{
-      variance[i] = (return_power[i] * decay_factor) + ((1-decay_factor) * variance[i-1] )
+  # Compute the exponentially weighted moving volatility
+  for(i in 2:nrow(stock_data)) {
+    variance[i] <- if(i == 2) {
+      return_power[i]
+    } else {
+      (return_power[i] * decay_factor) + ((1 - decay_factor) * variance[i - 1])
     }
   }
 
-  # 3. Return the volatility
-  return(reclass(round(sqrt(variance),2), stock_data))
+  # Return the volatility as an xts object
+  return(reclass(round(sqrt(variance), 2), stock_data))
 }

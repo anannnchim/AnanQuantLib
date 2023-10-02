@@ -9,4 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    quantmod
+    quantmod,
+    xts
+RoxygenNote: 7.2.3
