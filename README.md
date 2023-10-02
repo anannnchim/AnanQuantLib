@@ -4,7 +4,9 @@
 
 AnanQuantLib is a quantitative toolbox designed to assist in investment analysis and portfolio management. Developed by the Anan Capital Investment Lab, this package provides a robust set of tools for computing investment metrics, risk assessment, and data cleaning.
 
-![AnanQuantLib Logo](https://github.com/anannnchim/AnanQuantLib/blob/main/logo.png)  <!-- Insert your logo image path here -->
+![AnanQuantLib Logo](https://github.com/anannnchim/AnanQuan<img width="535" alt="logo" src="https://github.com/anannnchim/AnanQuantLib/assets/87483528/24372be1-efde-492b-905f-95d1a9d5cebb">
+
+
 
 ## Features
 
