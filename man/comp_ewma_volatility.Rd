@@ -2,7 +2,7 @@
 % Please edit documentation in R/comp_ewma_volatility.R
 \name{comp_ewma_volatility}
 \alias{comp_ewma_volatility}
-\title{Compute Exponentially Weighted Moving Average (EWMA) Volatility}
+\title{Compute Exponentially Weighted Moving Average (EWMA) Volatility in Price Terms}
 \usage{
 comp_ewma_volatility(stock_data, window = 36)
 }
@@ -10,19 +10,25 @@ comp_ewma_volatility(stock_data, window = 36)
 \item{stock_data}{An xts object containing the stock's closing prices.}
 
 \item{window}{An integer specifying the look-back window for the exponential decay factor.
-The default is set to 36.}
+The default value is 36.}
 }
 \value{
 An xts object containing the computed EWMA volatility values for each date
-        in the original dataset, rounded to four decimal places.
+        in the original dataset. The values are rounded to four decimal places.
 }
 \description{
 This function computes the Exponentially Weighted Moving Average (EWMA) volatility
-of a given stock's returns. The function uses a decay factor to assign more weight to
-recent observations. The calculation is based on the square of daily returns.
+of a given stock's price changes, using a decay factor to assign more weight to recent observations.
+The volatility is calculated based on the square of day-to-day price changes (absolute value).
 }
 \examples{
-stock_data = xts(runif(100, 100, 200), Sys.Date() + 1:100)
-comp_ewma_volatility(stock_data)
-comp_ewma_volatility(stock_data, window = 50)
+# Generate sample stock data
+stock_data <- xts(runif(100, 100, 200), order.by = Sys.Date() - 100:1)
+
+# Calculate EWMA volatility with default window
+volatility <- comp_ewma_volatility(stock_data)
+
+# Calculate EWMA volatility with a custom window
+custom_volatility <- comp_ewma_volatility(stock_data, window = 50)
+
 }

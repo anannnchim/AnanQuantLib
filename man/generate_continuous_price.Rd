@@ -14,11 +14,11 @@ generate_continuous_price(mean, sd, n)
 \item{n}{Integer, the number of time periods to simulate.}
 }
 \value{
-An xts object containing the simulated asset prices for each time period.
+An xts object containing the simulated asset prices for each time period, with identical Open, High, Low, and Close values.
 }
 \description{
-This function generates a time series of asset prices starting from an initial equity of 100.
-The function uses Gaussian-distributed percentage price changes to simulate the asset price movement.
+This function generates a time series of asset prices with identical Open, High, Low, and Close values
+starting from an initial equity of 100. It uses Gaussian-distributed percentage price changes to simulate the asset price movement.
 }
 \examples{
 set.seed(123)
