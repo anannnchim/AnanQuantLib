@@ -19,7 +19,8 @@ An xts object containing the computed EWMA volatility values for each date
 \description{
 This function computes the Exponentially Weighted Moving Average (EWMA) volatility
 of a given stock's price changes, using a decay factor to assign more weight to recent observations.
-The volatility is calculated based on the square of day-to-day price changes (absolute value).
+The volatility is calculated based on the square of day-to-day price changes (absolute value). Simply, it is
+daily volatility in price using standard deviation calculation method.
 }
 \examples{
 # Generate sample stock data
