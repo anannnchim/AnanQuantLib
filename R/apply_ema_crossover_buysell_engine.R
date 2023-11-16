@@ -35,12 +35,23 @@ apply_ema_crossover_buysell_engine <- function(stock_data, ema_fast_param, ema_s
   # Add Signal
   Signal <- rep(0, length(Ema_fast))
 
+  # Add dummy
+  dummy = rep(0, length(Ema_fast))
+
   for (i in 2:length(Ema_fast)) {
-    if (Ema_fast[i] > Ema_slow[i] && Ema_fast[i-1] < Ema_slow[i-1]) {
-      Signal[i] <- 1
-    } else if (Ema_fast[i] < Ema_slow[i] && Ema_fast[i-1] > Ema_slow[i-1]) {
-      Signal[i] <- -1
+
+    if(Ema_fast[i] > Ema_slow[i]){
+
+      if(Ema_fast[i-1] < Ema_slow[i-1] || Ema_fast[i-1] == Ema_slow[i-1]){
+        Signal[i] <- 1
+      }
+    }else if(Ema_fast[i] < Ema_slow[i]){
+
+      if(Ema_fast[i-1] > Ema_slow[i-1] || Ema_fast[i-1] == Ema_slow[i-1]){
+        Signal[i] <- -1
+      }
     }
+
   }
 
   # Add Hold
@@ -76,4 +87,58 @@ apply_ema_crossover_buysell_engine <- function(stock_data, ema_fast_param, ema_s
 
   return(output)
 }
+
+
+
+
+
+
+
+
+
+# Buy sell engine
+buysell_engine = apply_ema_crossover_buysell_engine(stock_data,
+                                                    ema_fast_param = 3,
+                                                    ema_slow_param = 13,
+                                                    lag = 1)
+# Get portfolio
+portfolio_data  = comp_portfolio(stock_data,
+                                 buysell_engine,
+                                 initial_capital = 100000,
+                                 cost_per_trade =  0.00,
+                                 volatility_per_trade =  0.00155)
+
+# Plot
+chartSeries(buysell_engine$Close, name = "Stock Price",theme = "white")
+addTA(buysell_engine$Ema_fast,type='l',lwd=2,col="skyblue",on=1)
+addTA(buysell_engine$Ema_slow,type='l',lwd=2,col="darkblue",on=1)
+addTA(buysell_engine$Close[which(buysell_engine$Execution == 1)], on = 1, lwd = 3, col = "darkgreen", type = "p")
+addTA(buysell_engine$Close[which(buysell_engine$Execution == -1)], on = 1, lwd = 3, col = "red", type = "b")
+addTA(buysell_engine$Hold, lwd = 2, col = "black", type = "l")
+addTA(buysell_engine$Signal,type = 'b' , lwd = 2, col = "darkblue")
+
+
+
+
+# Check the outcome
+df = cbind(buysell_engine[,1],buysell_engine[,4:8], comp_ewma_volatility(stock_data,36),portfolio_data$transaction_data, portfolio_data$portfolio_data)
+
+# Get return and normalize
+system_ri = dailyReturn(portfolio_data$portfolio_data$Value)
+base_ri = dailyReturn(stock_data$Close)
+factor = (sd(base_ri, na.rm = TRUE) / sd(system_ri, na.rm = TRUE))
+normalized_ri = system_ri * factor
+
+# Number of round trades per year
+number_of_round_trade = nrow(na.omit(portfolio_data$transaction_data[portfolio_data$transaction_data$Transaction !=0]))/ 8
+
+# Plot
+charts.PerformanceSummary(cbind(base_ri, system_ri, normalized_ri))
+create_annual_performance_table(cbind(base_ri, system_ri, normalized_ri))
+SharpeRatio.annualized(base_ri)
+SharpeRatio.annualized(system_ri)
+print(number_of_round_trade)
+plot(portfolio_data$portfolio_data$Holding)
+nrow(na.omit(portfolio_data$transaction_data[portfolio_data$transaction_data$Transaction !=0]))
+
 

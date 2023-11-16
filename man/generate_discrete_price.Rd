@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_discrete_price.R
 \name{generate_discrete_price}
 \alias{generate_discrete_price}
-\title{Generate Discrete Price Series Based on a Payoff and Win Chance}
+\title{Generate Discrete Price Series with OHLC Values}
 \usage{
 generate_discrete_price(payoff, win_chance, n)
 }
@@ -14,13 +14,15 @@ generate_discrete_price(payoff, win_chance, n)
 \item{n}{Integer, the number of time steps to simulate.}
 }
 \value{
-An xts object containing the equity values over the n time steps.
+An xts object containing OHLC values over the n time steps.
 }
 \description{
-This function generates a discrete series of equity prices based on given
-payoff and winning chance parameters. The function starts with an initial
-equity of 100 and simulates each discrete step based on the provided
-win_chance and payoff parameters.
+This function generates a discrete series of equity prices with Open, High,
+Low, and Close values being identical, based on given payoff and winning
+chance parameters. The function starts with an initial equity of 100 and
+simulates each discrete step based on the provided win_chance and payoff
+parameters. The resulting xts object will have OHLC columns, all with the
+same values at each time step.
 }
 \examples{
 generate_discrete_price(payoff = 2, win_chance = 0.5, n = 100)
