@@ -124,4 +124,4 @@ comp_portfolio <- function(stock_data, buysell_engine, initial_capital, cost_per
   }
 
   return(list(transaction_data = transaction_data, portfolio_data = portfolio_data))
-}
+} #add
