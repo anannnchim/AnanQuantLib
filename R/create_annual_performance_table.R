@@ -20,8 +20,9 @@ create_annual_performance_table <- function(daily_return){
   table <- rbind(table, "Max drawdown" = maxDrawdown(daily_return, geometric = TRUE))
 
   # Adjust data for presentation
-  colnames(table) <- "Value"
-  table <- round(table, 2)
+  new_colnames <- paste("System", seq(1, ncol(daily_return)), sep = "_")
+  colnames(table) <- new_colnames
+  table <- round(table, 3)
 
   return(table)
 }
