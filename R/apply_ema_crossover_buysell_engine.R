@@ -26,6 +26,11 @@
 
 apply_ema_crossover_buysell_engine <- function(stock_data, ema_fast_param, ema_slow_param, lag = 1){
 
+  # Adjust columns name in case of one columns
+  if(ncol(stock_data) == 1){
+    names(stock_data) <- "Close"
+  }
+
   # Create indicators
   Ema_slow = comp_ema(stock_data[, "Close"], ema_slow_param)
   Ema_fast = comp_ema(stock_data[, "Close"], ema_fast_param)
