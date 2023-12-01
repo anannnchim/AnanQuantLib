@@ -3,6 +3,7 @@
 #' This function gathers stock data for a given list of symbols over a specified date range.
 #' It fetches the daily closing prices and computes the daily returns for each stock symbol.
 #' The function is designed to handle cases where some stock data might not be available or encounters an error during fetching.
+#' Data source: stooq.com
 #'
 #' @param universe A vector of stock symbols (tickers) for which the data needs to be fetched.
 #' @param start_date The start date for the data fetch in "YYYY-MM-DD" format.

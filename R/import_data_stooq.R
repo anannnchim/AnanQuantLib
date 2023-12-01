@@ -1,54 +1,53 @@
 #' Import Data from Stooq
 #'
-#' This function imports historical stock data from Stooq and converts it to an xts object.
-#' It formats the start and end dates to the required format and constructs the URL to download the data.
+#' This function imports historical stock data from Stooq, a financial data provider. It constructs
+#' a URL for the given stock symbol and specified date range, then downloads and converts the data
+#' into an xts object. The function handles any errors that may occur during data download or
+#' conversion, such as issues with the symbol or data format.
 #'
 #' @param symbol The ticker symbol of the stock.
 #' @param start_date The start date for the data in 'YYYY-MM-DD' format.
 #' @param end_date The end date for the data in 'YYYY-MM-DD' format.
 #'
-#' @return An xts object containing the stock data.
+#' @return An xts object containing the stock data if successful, or NULL in case of an error.
 #'
 #' @examples
 #' \dontrun{
-#' apple_stock <- import_data_stooq("AAPL.US", "2020-01-01", "2021-01-01")
+#'   # Example usage for Apple stock
+#'   apple_stock <- import_data_stooq("AAPL.US", "2020-01-01", "2021-01-01")
+#'   # Handle cases where data is not available or an error occurs
+#'   if (is.null(apple_stock)) {
+#'     message("Data not available or an error occurred.")
+#'   }
 #' }
 #'
 #' @export
-#'
 import_data_stooq <- function(symbol, start_date, end_date) {
-
-  # Validate input dates
-  start_date <- as.Date(start_date)
-  end_date <- as.Date(end_date)
-  if(is.na(start_date) || is.na(end_date)) {
-    stop("Invalid date format. Please use 'YYYY-MM-DD'.")
-  }
-  if(end_date < start_date) {
-    stop("End date must be after start date.")
-  }
-
-  # Format the start and end dates to "YYYYMMDD".
-  start_date <- format(start_date, "%Y%m%d")
-  end_date <- format(end_date, "%Y%m%d")
+  # Format the start and end dates to "YYYYMMDD" as required by the URL.
+  start_date_formatted <- format(as.Date(start_date), "%Y%m%d")
+  end_date_formatted <- format(as.Date(end_date), "%Y%m%d")
 
   # Construct the URL for the required symbol and date range.
-  url <- sprintf("https://stooq.com/q/d/l/?s=%s&d1=%s&d2=%s&i=d", symbol, start_date, end_date)
+  url <- paste0("https://stooq.com/q/d/l/?s=", symbol, "&d1=", start_date_formatted, "&d2=", end_date_formatted, "&i=d")
 
-  # Import the data from the URL.
-  stock_data <- readr::read_csv(url, show_col_types = FALSE)
-
-  # Check if data is empty
-  if (nrow(stock_data) == 0) {
-    stop("No data available for the given symbol and date range.")
-  }
-
-  # Convert to 'xts' format
-  tryCatch({
-    stock_data_xts <- xts::xts(stock_data[,-1], order.by = as.Date(stock_data$Date))
+  # Attempt to import the data from the URL.
+  stock_data <- tryCatch({
+    read_csv(url, show_col_types = FALSE)
   }, error = function(e) {
-    stop("Error converting to xts format: ", e$message)
+    warning("Failed to download data for symbol: ", symbol)
+    return(NULL)
   })
 
-  return(stock_data_xts)
+  # Convert the data to 'xts' format if it's not NULL.
+  if (!is.null(stock_data)) {
+    return(tryCatch({
+      as.xts(stock_data[,-1], order.by = as.Date(stock_data$Date))
+    }, error = function(e) {
+      warning("Failed to convert data to xts for symbol: ", symbol)
+      return(NULL)
+    }))
+  } else {
+    return(NULL)
+  }
 }
+
