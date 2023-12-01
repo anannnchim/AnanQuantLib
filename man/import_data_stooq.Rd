@@ -14,15 +14,22 @@ import_data_stooq(symbol, start_date, end_date)
 \item{end_date}{The end date for the data in 'YYYY-MM-DD' format.}
 }
 \value{
-An xts object containing the stock data.
+An xts object containing the stock data if successful, or NULL in case of an error.
 }
 \description{
-This function imports historical stock data from Stooq and converts it to an xts object.
-It formats the start and end dates to the required format and constructs the URL to download the data.
+This function imports historical stock data from Stooq, a financial data provider. It constructs
+a URL for the given stock symbol and specified date range, then downloads and converts the data
+into an xts object. The function handles any errors that may occur during data download or
+conversion, such as issues with the symbol or data format.
 }
 \examples{
 \dontrun{
-apple_stock <- import_data_stooq("AAPL.US", "2020-01-01", "2021-01-01")
+  # Example usage for Apple stock
+  apple_stock <- import_data_stooq("AAPL.US", "2020-01-01", "2021-01-01")
+  # Handle cases where data is not available or an error occurs
+  if (is.null(apple_stock)) {
+    message("Data not available or an error occurred.")
+  }
 }
 
 }
