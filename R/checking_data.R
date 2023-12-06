@@ -28,7 +28,7 @@ checking_data <- function(stock_data) {
   number_of_duplication <- anyDuplicated(index(stock_data))
   number_of_negative <- sum(stock_data < 0, na.rm = TRUE)
 
-  return(matrix(c(number_of_NA, number_of_duplication, number_of_negative),
+  return(matrix(c(number_of_rows, number_of_NA, number_of_duplication, number_of_negative),
                 nrow = 1,
                 dimnames = list(c("Count"),
                                 c("number_of_rows","number_of_NA", "number_of_duplication", "number_of_negative"))))
