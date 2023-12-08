@@ -42,16 +42,20 @@ apply_ema_crossover_buysell_engine <- function(stock_data, ema_fast_param, ema_s
   havePosition = 0
 
   for (i in 2:length(Ema_fast)) {
-
+    # If cross up and no positon
     if(Ema_fast[i] > Ema_slow[i] & havePosition == 0){
 
-      if(Ema_fast[i-1] < Ema_slow[i-1] || Ema_fast[i-1] == Ema_slow[i-1]){
+      # IF Previous day is not already uptrend
+      if(!(Ema_fast[i-1] > Ema_slow[i-1])){
         Signal[i] <- 1
         havePosition = 1
       }
+
+      # If cross down and have position
     }else if(Ema_fast[i] < Ema_slow[i] && havePosition == 1){
 
-      if(Ema_fast[i-1] > Ema_slow[i-1] || Ema_fast[i-1] == Ema_slow[i-1]){
+      # IF previous day is not already downtrend.
+      if(!(Ema_fast[i-1] < Ema_slow[i-1] )){
         Signal[i] <- -1
         havePosition = 0
       }
