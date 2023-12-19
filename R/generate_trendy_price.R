@@ -70,8 +70,9 @@ generate_trendy_price <- function(Nlength, Tlength, Xamplitude, Volscale, sines 
 
   # Create xts object
   date_index <- seq.Date(from = as.Date('2020-01-01'), by = 'day', length.out = Nlength)
-  combined_xts <- xts(combined_price, order.by = date_index)
-  colnames(combined_xts) <- "Close"
+  data_matrix = matrix(rep(combined_price, 4), ncol = 4)
+  combined_xts <- xts(data_matrix, order.by = date_index)
+  colnames(combined_xts) <- c("Open", "High", "Low", "Close")
 
   return(combined_xts)
 }
