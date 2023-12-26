@@ -54,6 +54,7 @@ generate_trends <- function(Nlength, Tlength, Xamplitude) {
 #' @param Volscale The volatility scaling factor.
 #' @param sines If TRUE, uses sine-wave trends. If FALSE, uses linear trends.
 #' @return An xts object containing the synthetic price series.
+#'
 generate_trendy_price <- function(Nlength, Tlength, Xamplitude, Volscale, sines = FALSE) {
   stdev <- Volscale * Xamplitude
   noise <- generate_noise(Nlength, stdev)
