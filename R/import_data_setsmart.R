@@ -1,8 +1,3 @@
-library(httr)
-library(jsonlite)
-library(dplyr)
-library(xts)
-
 #' Import End-of-Day Stock Data from SETSMART
 #'
 #' Retrieves End-of-Day stock data from the SETSMART API for a specified symbol over a given date range.
@@ -26,6 +21,12 @@ library(xts)
 #'
 
 import_data_setsmart <- function(api_key, symbol, startDate, endDate) {
+
+  library(httr)
+  library(jsonlite)
+  library(dplyr)
+  library(xts)
+
   url <- "https://www.setsmart.com/api/listed-company-api/eod-price-by-symbol"
 
   # Headers and query parameters
