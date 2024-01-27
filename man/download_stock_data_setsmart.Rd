@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_stock_data_setsmart.R
 \name{download_stock_data_setsmart}
 \alias{download_stock_data_setsmart}
-\title{Download Stock Data by Symbol from SETSMART API}
+\title{Download Selected Stock Data by Symbol from SETSMART API}
 \usage{
 download_stock_data_setsmart(api_key, symbol, startDate, endDate)
 }
@@ -16,13 +16,14 @@ download_stock_data_setsmart(api_key, symbol, startDate, endDate)
 \item{endDate}{Date The end date for the data retrieval in 'YYYY-MM-DD' format.}
 }
 \value{
-A dataframe containing the stock data including prices and statistics for the specified symbol and date range.
-        In case of an error or unavailable data, a warning is issued and an empty dataframe is returned.
+A dataframe containing the columns: date, symbol, open, high, low, close, aomVolume, aomValue.
+        Each row represents a day's trading data for the specified symbol and date range.
+        In case of an error or unavailable data, a warning is issued, and an empty dataframe is returned.
 }
 \description{
-Retrieves end-of-day (EOD) stock price data for a given symbol from the SETSMART API. 
-This data includes both original and adjusted prices along with other relevant statistics. 
-The data availability period is subject to the SETSMART package's constraints.
+Retrieves selected end-of-day (EOD) stock price data for a given symbol from the SETSMART API.
+The returned data includes date, symbol, open, high, low, close prices, as well as volume and value of trades.
+The data availability period is subject to the constraints of the SETSMART package.
 }
 \examples{
 api_key <- "your_api_key"
