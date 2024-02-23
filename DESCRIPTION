@@ -10,5 +10,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     quantmod,
-    xts
+    xts,
+    TTR
 RoxygenNote: 7.2.3
