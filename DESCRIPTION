@@ -14,3 +14,4 @@ Imports:
     TTR,
     remotes
 RoxygenNote: 7.2.3
+NeedsCompilation: no
