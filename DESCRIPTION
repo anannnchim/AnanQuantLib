@@ -11,5 +11,6 @@ LazyData: true
 Imports: 
     quantmod,
     xts,
-    TTR
+    TTR,
+    remotes
 RoxygenNote: 7.2.3
