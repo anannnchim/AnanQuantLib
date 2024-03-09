@@ -1,1 +1,6 @@
 exportPattern("^[[:alpha:]]+")
+import(dplyr)
+importFrom(magrittr, "%>%")
+importFrom(TTR, EMA, ATR)
+importFrom(quantmod, getSymbols)
+importFrom(xts, xts, last)
