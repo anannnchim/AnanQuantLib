@@ -24,7 +24,7 @@ daily volatility in price using standard deviation calculation method.
 }
 \examples{
 # Generate sample stock data
-stock_data <- xts(runif(100, 100, 200), order.by = Sys.Date() - 100:1)
+stock_data <- generate_continuous_price(0.0005, 0.01, 100)
 
 # Calculate EWMA volatility with default window
 volatility <- comp_ewma_volatility(stock_data)

@@ -11,21 +11,18 @@
 #'         Each row represents a day's trading data for the specified symbol and date range.
 #'         In case of an error or unavailable data, a warning is issued, and NULL is returned.
 #' @examples
+#' \dontrun{
 #' api_key <- "your_api_key"
 #' stock_data <- import_data_setsmart(api_key, "TGE", "2024-01-04", "2024-01-15")
 #' plot(stock_data)
+#' }
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr select
 #' @importFrom xts xts
-#'
 
 import_data_setsmart <- function(api_key, symbol, startDate, endDate) {
 
-  library(httr)
-  library(jsonlite)
-  library(dplyr)
-  library(xts)
 
   url <- "https://www.setsmart.com/api/listed-company-api/eod-price-by-symbol"
 
@@ -47,8 +44,8 @@ import_data_setsmart <- function(api_key, symbol, startDate, endDate) {
     parsed_data <- fromJSON(data, flatten = TRUE)
 
     # Convert data to a dataframe with capitalized column names and exclude unneeded columns
-    selected_data <- as.data.frame(parsed_data) %>%
-      select(date, Open = open, High = high, Low = low, Close = close)
+    selected_data <- as.data.frame(parsed_data)[, c("date", "open", "high", "low", "close")]
+    names(selected_data) <- c("date", "Open", "High", "Low", "Close")
 
     # Convert the data to 'xts' format
     if (nrow(selected_data) > 0) {

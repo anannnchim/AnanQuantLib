@@ -7,24 +7,17 @@
 setsmart_get_database(api_key, from, to)
 }
 \arguments{
-\item{api_key}{string The API key for authentication with the data source.}
+\item{api_key}{API key used to authenticate with SETSMART.}
 
-\item{from}{Date The start date for the data retrieval in 'YYYY-MM-DD' format.}
+\item{from}{First requested date.}
 
-\item{to}{Date The end date for the data retrieval in 'YYYY-MM-DD' format.}
+\item{to}{Last requested date.}
 }
 \value{
-A dataframe with columns: date, symbol, open, high, low, close, aomVolume, aomValue.
-        Each row represents a day's trading data for a specific symbol within the given date range.
-        If data for a specific date is unavailable or an error occurs, a warning is issued, and an empty dataframe is returned.
+A data frame with date, symbol, OHLC, volume, and value columns.
 }
 \description{
-Retrieves end-of-day (EOD) stock price data for common stocks ('CS') over a specified date range. 
-The data includes open, high, low, and close prices, as well as volume and value of trades.
-This function automatically sets the security type to 'CS' and the adjusted price flag to 'Y'.
-}
-\examples{
-api_key <- "your_api_key"
-stock_data <- setsmart_get_database(api_key, "2021-01-01", "2021-01-31")
-
+Retrieves adjusted end-of-day prices for common stocks over a date range.
+HTTP errors and malformed non-empty responses stop the update. Empty weekend
+dates and possible weekday market holidays are reported separately.
 }

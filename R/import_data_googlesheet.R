@@ -1,5 +1,3 @@
-library(googlesheets4)
-library(xts)
 
 #' Read Stock Data from Google Sheets and Convert to xts Object
 #'
@@ -13,9 +11,10 @@ library(xts)
 #' @return An xts object containing the stock data, with the first column assumed to be dates.
 #'
 #' @examples
+#' \dontrun{
 #' sheet_url <- "https://docs.google.com/spreadsheets/d/..."
 #' stock_data <- read_stock_data_from_sheet(sheet_url, "Sheet1")
-#'
+#' }
 #' @export
 import_data_googlesheet <- function(sheet_url, sheet_name) {
   # Read the specified sheet from the Google Sheets document

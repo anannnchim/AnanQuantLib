@@ -26,7 +26,8 @@ The returned data includes date, symbol, open, high, low, close prices, as well 
 The data availability period is subject to the constraints of the SETSMART package.
 }
 \examples{
+\dontrun{
 api_key <- "your_api_key"
 stock_quote <- download_stock_data_setsmart(api_key, "JTS", "2023-01-02", "2023-01-04")
-
+}
 }

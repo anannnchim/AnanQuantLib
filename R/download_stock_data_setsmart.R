@@ -1,7 +1,4 @@
 # Load necessary libraries
-library(httr)
-library(jsonlite)
-library(dplyr)
 
 #' Download Selected Stock Data by Symbol from SETSMART API
 #'
@@ -19,9 +16,10 @@ library(dplyr)
 #'         In case of an error or unavailable data, a warning is issued, and an empty dataframe is returned.
 #'
 #' @examples
+#' \dontrun{
 #' api_key <- "your_api_key"
 #' stock_quote <- download_stock_data_setsmart(api_key, "JTS", "2023-01-02", "2023-01-04")
-#'
+#' }
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom dplyr as.data.frame select
@@ -47,8 +45,8 @@ download_stock_data_setsmart <- function(api_key, symbol, startDate, endDate) {
     parsed_data <- fromJSON(data, flatten = TRUE)
 
     # Select only specified columns
-    selected_data <- as.data.frame(parsed_data) %>%
-      select(date, symbol, open, high, low, close, aomVolume, aomValue)
+    selected_data <- as.data.frame(parsed_data)[,
+      c("date", "symbol", "open", "high", "low", "close", "aomVolume", "aomValue")]
 
     return(selected_data)
   } else {

@@ -8,10 +8,17 @@ Description: A set of utilities and functions to assist with investment research
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: 
+Imports:
+    dplyr,
+    googlesheets4,
+    httr,
+    jsonlite,
+    magrittr,
+    PerformanceAnalytics,
     quantmod,
+    readr,
+    stats,
     xts,
-    TTR,
-    remotes
+    zoo
 RoxygenNote: 7.2.3
 NeedsCompilation: no
