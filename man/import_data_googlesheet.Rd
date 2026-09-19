@@ -20,7 +20,8 @@ into an xts object for time series analysis. The function requires the URL of
 the Google Sheet and the name of the specific sheet within the document.
 }
 \examples{
+\dontrun{
 sheet_url <- "https://docs.google.com/spreadsheets/d/..."
 stock_data <- read_stock_data_from_sheet(sheet_url, "Sheet1")
-
+}
 }

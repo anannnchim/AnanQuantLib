@@ -8,7 +8,7 @@
 #' @return An xts object with the computed EMA.
 #'
 #' @examples
-#' stock_data = xts(runif(100, 100, 200), Sys.Date() + 1:100)
+#' stock_data <- generate_continuous_price(0.0005, 0.01, 100)
 #' comp_ema(stock_data, window = 20)
 
 comp_ema = function(stock_data, window){

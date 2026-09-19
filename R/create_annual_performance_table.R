@@ -7,10 +7,12 @@
 #' @return A data frame containing the annualized performance metrics such as Annualized Returns,
 #' Average Drawdown, and Maximum Drawdown.
 #' @examples
+#' \dontrun{
 #' # Example using hypothetical daily returns
-#' daily_returns <- rnorm(252, 0, 0.02)
+#' daily_returns <- xts::xts(stats::rnorm(252, 0, 0.02), Sys.Date() - 251:0)
 #' performance_table <- create_annual_performance_table(daily_returns)
 #' print(performance_table)
+#' }
 #' @importFrom PerformanceAnalytics table.AnnualizedReturns AverageDrawdown maxDrawdown
 create_annual_performance_table <- function(daily_return){
 

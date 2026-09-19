@@ -7,9 +7,9 @@
 generate_continuous_price(mean, sd, n)
 }
 \arguments{
-\item{mean}{Numeric, the mean percentage change per time period (as a decimal, e.g., 0.01 for 1%).}
+\item{mean}{Numeric, the mean percentage change per time period (as a decimal, e.g., 0.01 for 1\%).}
 
-\item{sd}{Numeric, the standard deviation of the percentage change per time period (as a decimal, e.g., 0.03 for 3%).}
+\item{sd}{Numeric, the standard deviation of the percentage change per time period (as a decimal, e.g., 0.03 for 3\%).}
 
 \item{n}{Integer, the number of time periods to simulate.}
 }

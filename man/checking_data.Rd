@@ -20,7 +20,7 @@ This function checks a given stock data set for common data issues such as missi
 duplicated indices, and negative values. It counts the number of occurrences of these issues.
 }
 \examples{
-# Assuming stock_data is an xts or data frame object
+stock_data <- generate_continuous_price(0.0005, 0.01, 20)
 issues <- checking_data(stock_data)
 print(issues)
 

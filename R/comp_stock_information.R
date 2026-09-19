@@ -14,11 +14,12 @@
 #'         - 'close_price': A data frame (or an xts object) with columns representing the closing prices for each stock symbol.
 #'
 #' @examples
+#' \dontrun{
 #' stocks_universe <- c("AAPL.US", "MSFT.US", "GOOGL.US")
 #' stock_info <- comp_stock_information(stocks_universe, "2020-01-01", "2021-01-01")
 #' head(stock_info$daily_return)
 #' head(stock_info$close_price)
-#'
+#' }
 #' @importFrom quantmod dailyReturn
 #' @importFrom xts xts
 #' @importFrom readr read_csv

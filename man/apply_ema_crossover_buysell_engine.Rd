@@ -36,8 +36,7 @@ Signals and Execution:
 - A buy signal at time (t) leads to buying at the opening of (t+1), and a sell signal at time (t) leads to selling at the opening of (t+1).
 }
 \examples{
-# Example usage:
-# stock_data should be an xts object with a 'Close' column
+stock_data <- generate_continuous_price(0.0005, 0.01, 100)
 result <- apply_ema_crossover_buysell_engine(stock_data, 12, 26)
 
 }

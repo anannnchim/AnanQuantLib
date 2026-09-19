@@ -25,7 +25,9 @@ Retrieves End-of-Day stock data from the SETSMART API for a specified symbol ove
 The function returns data in an 'xts' format with columns for Open, High, Low, and Close prices.
 }
 \examples{
+\dontrun{
 api_key <- "your_api_key"
 stock_data <- import_data_setsmart(api_key, "TGE", "2024-01-04", "2024-01-15")
 plot(stock_data)
+}
 }

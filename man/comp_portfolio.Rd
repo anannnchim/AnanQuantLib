@@ -22,7 +22,7 @@ signal, -1 indicates a sell signal, and 0 indicates no action.}
 \item{initial_capital}{Numeric, the initial capital amount in the portfolio.}
 
 \item{cost_per_trade}{Numeric, the cost per trade expressed as a proportion of the
-trade value (for example, 0.001 for 0.1% per trade).}
+trade value (for example, 0.001 for 0.1\% per trade).}
 
 \item{volatility_per_trade}{Numeric, the volatility per trade expressed as a
 proportion of the trade value, used to determine the volume of each trade.}
@@ -41,9 +41,10 @@ amount, and holdings over time. The function requires stock data with Open, High
 and Close (OHLC) values and a compatible buy/sell signal engine.
 }
 \examples{
+\dontrun{
 stock_data <- ... # xts object with OHLC data
 buysell_engine <- ... # xts object with buy/sell signals
 portfolio_result <- comp_portfolio(stock_data, buysell_engine,
                                   10000, 0.001, 0.02)
-
+}
 }

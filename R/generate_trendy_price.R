@@ -1,6 +1,4 @@
 # Load necessary libraries
-library(xts)
-library(dplyr)
 
 #' Generate Gaussian Noise Sequence
 #'

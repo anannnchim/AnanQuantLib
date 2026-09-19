@@ -19,6 +19,6 @@ This function calculates the Exponential Moving Average (EMA) of a given stock
 based on the close prices.
 }
 \examples{
-stock_data = xts(runif(100, 100, 200), Sys.Date() + 1:100)
+stock_data <- generate_continuous_price(0.0005, 0.01, 100)
 comp_ema(stock_data, window = 20)
 }

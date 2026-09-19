@@ -18,8 +18,10 @@ This function computes an annual performance summary for a given set of daily re
 The function uses the PerformanceAnalytics package to calculate various performance metrics.
 }
 \examples{
+\dontrun{
 # Example using hypothetical daily returns
-daily_returns <- rnorm(252, 0, 0.02)
+daily_returns <- xts::xts(stats::rnorm(252, 0, 0.02), Sys.Date() - 251:0)
 performance_table <- create_annual_performance_table(daily_returns)
 print(performance_table)
+}
 }

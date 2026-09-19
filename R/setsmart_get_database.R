@@ -1,67 +1,78 @@
-# Load necessary libraries
-library(httr)
-library(jsonlite)
-library(dplyr)
-
 #' Get End-of-Day Stock Data for Common Stocks from API
 #'
-#' Retrieves end-of-day (EOD) stock price data for common stocks ('CS') over a specified date range. 
-#' The data includes open, high, low, and close prices, as well as volume and value of trades.
-#' This function automatically sets the security type to 'CS' and the adjusted price flag to 'Y'.
+#' Retrieves adjusted end-of-day prices for common stocks over a date range.
+#' HTTP errors and malformed non-empty responses stop the update. Empty weekend
+#' dates and possible weekday market holidays are reported separately.
 #'
-#' @param api_key string The API key for authentication with the data source.
-#' @param from Date The start date for the data retrieval in 'YYYY-MM-DD' format.
-#' @param to Date The end date for the data retrieval in 'YYYY-MM-DD' format.
-#'
-#' @return A dataframe with columns: date, symbol, open, high, low, close, aomVolume, aomValue.
-#'         Each row represents a day's trading data for a specific symbol within the given date range.
-#'         If data for a specific date is unavailable or an error occurs, a warning is issued, and an empty dataframe is returned.
-#'
-#' @examples
-#' api_key <- "your_api_key"
-#' stock_data <- setsmart_get_database(api_key, "2021-01-01", "2021-01-31")
-#'
-#' @importFrom httr GET add_headers status_code content
-#' @importFrom jsonlite fromJSON
-#' @importFrom lubridate as.Date
-#' @importFrom dplyr select bind_rows
-
+#' @param api_key API key used to authenticate with SETSMART.
+#' @param from First requested date.
+#' @param to Last requested date.
+#' @return A data frame with date, symbol, OHLC, volume, and value columns.
+#' @export
 setsmart_get_database <- function(api_key, from, to) {
-  
-  
+  required <- c("date", "symbol", "open", "high", "low", "close", "aomVolume", "aomValue")
+  from <- as.Date(from)
+  to <- as.Date(to)
+  if (!is.character(api_key) || length(api_key) != 1L || !nzchar(api_key)) {
+    stop("SETSMART API key is missing.")
+  }
+  if (is.na(from) || is.na(to) || from > to) {
+    stop("Invalid SETSMART date range.")
+  }
+
   url <- "https://www.setsmart.com/api/listed-company-api/eod-price-by-security-type"
   headers <- httr::add_headers(`api-key` = api_key)
-  
-  # Generate a sequence of dates
-  date_seq <- seq(as.Date(from), as.Date(to), by = "day")
-  
+  date_seq <- seq(from, to, by = "day")
+  empty_weekends <- as.Date(character())
+  empty_weekdays <- as.Date(character())
+
   all_data <- lapply(date_seq, function(date) {
-    params <- list(
+    request_date <- as.Date(date, origin = "1970-01-01")
+    response <- httr::GET(url, headers, query = list(
       securityType = "CS",
-      date = format(date, "%Y-%m-%d"),
+      date = format(request_date, "%Y-%m-%d"),
       adjustedPriceFlag = "Y"
-    )
-    
-    response <- httr::GET(url, headers, query = params)
-    if (status_code(response) == 200) {
-      data <- content(response, type = "text", encoding = "UTF-8")
-      parsed_data <- fromJSON(data, flatten = TRUE)
-      
-      # Check if the expected columns are present
-      if (!is.null(parsed_data) && all(c("date","symbol", "open", "high", "low", "close", "aomVolume", "aomValue") %in% names(parsed_data))) {
-        selected_data <- as.data.frame(parsed_data) %>%
-          select(date, symbol, open, high, low, close, aomVolume, aomValue)
-        return(selected_data)
+    ))
+    if (httr::status_code(response) != 200L) {
+      stop("SETSMART request failed for ", request_date, " with HTTP ",
+           httr::status_code(response), ".")
+    }
+
+    body <- httr::content(response, type = "text", encoding = "UTF-8")
+    parsed <- tryCatch(jsonlite::fromJSON(body, flatten = TRUE),
+                       error = function(error) {
+                         stop("SETSMART returned invalid JSON for ", request_date,
+                              ": ", conditionMessage(error))
+                       })
+    if (is.null(parsed) || length(parsed) == 0L ||
+        (is.data.frame(parsed) && nrow(parsed) == 0L)) {
+      if (weekdays(request_date) %in% c("Saturday", "Sunday")) {
+        empty_weekends <<- c(empty_weekends, request_date)
       } else {
-        return(data.frame())
+        empty_weekdays <<- c(empty_weekdays, request_date)
       }
-    } else {
-      warning("Failed to retrieve data for date ", format(date, "%Y-%m-%d"), ": HTTP status code ", status_code(response))
       return(data.frame())
     }
+
+    parsed <- as.data.frame(parsed)
+    missing <- setdiff(required, names(parsed))
+    if (length(missing)) {
+      stop("SETSMART response for ", request_date,
+           " is missing columns: ", paste(missing, collapse = ", "), ".")
+    }
+    dplyr::select(parsed, dplyr::all_of(required))
   })
-  
-  # Combine all data frames
-  combined_data <- bind_rows(all_data)
-  return(combined_data)
+
+  combined <- dplyr::bind_rows(all_data)
+  if (length(empty_weekends)) {
+    message("No SETSMART rows for weekend dates: ",
+            paste(empty_weekends, collapse = ", "), ".")
+  }
+  if (length(empty_weekdays)) {
+    message("No SETSMART rows for weekday dates (possible market holidays): ",
+            paste(empty_weekdays, collapse = ", "), ".")
+  }
+  attr(combined, "empty_weekend_dates") <- empty_weekends
+  attr(combined, "empty_weekday_dates") <- empty_weekdays
+  combined
 }

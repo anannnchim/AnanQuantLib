@@ -1,4 +1,3 @@
-library(xts)
 
 #' Generate Discrete Price Series with OHLC Values
 #'

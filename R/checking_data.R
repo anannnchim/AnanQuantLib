@@ -11,7 +11,7 @@
 #'         - 'number_of_negative': Number of negative values in the data.
 #'
 #' @examples
-#' # Assuming stock_data is an xts or data frame object
+#' stock_data <- generate_continuous_price(0.0005, 0.01, 20)
 #' issues <- checking_data(stock_data)
 #' print(issues)
 #'

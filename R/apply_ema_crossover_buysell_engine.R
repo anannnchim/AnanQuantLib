@@ -18,8 +18,7 @@
 #' @return An xts object that includes the original stock data augmented with columns: Ema_fast, Ema_slow, Signal, Execution, and Hold.
 #'
 #' @examples
-#' # Example usage:
-#' # stock_data should be an xts object with a 'Close' column
+#' stock_data <- generate_continuous_price(0.0005, 0.01, 100)
 #' result <- apply_ema_crossover_buysell_engine(stock_data, 12, 26)
 #'
 #' @export
